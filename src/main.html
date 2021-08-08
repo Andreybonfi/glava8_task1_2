@@ -1,0 +1,66 @@
+use std::collections::HashMap;
+use std::io;
+
+fn main() {
+
+    task1();
+
+    task2();
+
+
+}
+
+fn task1() {
+    let mut numbers: Vec<f32> = Vec::new();
+    let mut line = String::new();
+    let mut map = HashMap::new();
+    {
+        println!("Введите числа через пробел");
+        io::stdin()
+            .read_line(&mut line)
+            .expect("error");
+        let v: Vec<_> = line.trim().split(' ').collect();
+
+        for i in v.iter() {
+            numbers.push(i.parse().unwrap());
+        }
+    }
+
+    let summa: f32 = numbers.iter().sum();
+    println!("Среднее значение = {}", summa / numbers.len() as f32);
+
+    numbers.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+    if numbers.len() as f32 % 2.0 == 0.0 {
+        println!("Медиана = {}", numbers[numbers.len() / 2]);
+    } else {
+        println!(
+            "Медиана = {}",
+            numbers[numbers.len() / 2 - 1] + numbers[numbers.len() / 2 / 2]
+        );
+    }
+    for number in line.split_whitespace() {
+        let count = map.entry(number).or_insert(0);
+        *count += 1;
+    }
+    println!("{:?}", map);
+    println!("{:?}", map.iter().max_by_key(|entry| entry.1).unwrap());
+
+    println!("Введенные данные: {:?}", numbers);
+}
+
+
+fn task2(){
+    println!("Введите слово");
+    let mut str = String::new();
+    io::stdin()
+            .read_line(&mut str)
+            .expect("error");
+
+    if "qwrtpsdfghklzxcvbnm".contains( &str[0..1].to_string()){
+        println!("\n{}-{}ay",&str[1..].trim(),&str[..1]);
+    }
+    else {
+        println!("\n{}-hay",str.trim());
+    } 
+}
